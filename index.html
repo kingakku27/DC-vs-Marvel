@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Marvel vs DC Power Duel with Images</title>
+<link rel="icon" href="img/4677a0a9d11f511a6479c77e0bc1511c.jpg">
+<style>
+  /* Reset */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #121212;
+    color: #eee;
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+
+  /* Container */
+  #app {
+    width: 100%;
+    max-width: 450px;
+    background: #1e1e1e;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 0 25px rgba(243,156,18,0.7);
+  }
+
+  h1, h2 {
+    margin: 0 0 20px 0;
+    text-align: center;
+    user-select: none;
+    color: #f39c12;
+    text-shadow: 0 0 8px #f39c12;
+  }
+
+  ul.hero-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  ul.hero-list li {
+    background: #2c2c2c;
+    margin-bottom: 12px;
+    padding: 15px 20px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 1.2rem;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  ul.hero-list li:hover {
+    background: #f39c12;
+    color: #121212;
+    box-shadow: 0 0 10px #f39c12;
+  }
+
+  ul.hero-list li img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    transition: border-color 0.3s;
+  }
+  ul.hero-list li:hover img {
+    border-color: #121212;
+  }
+
+  button {
+    margin-top: 20px;
+    background: transparent;
+    border: 2px solid #f39c12;
+    color: #f39c12;
+    padding: 8px 15px;
+    font-weight: 700;
+    border-radius: 10px;
+    cursor: pointer;
+    user-select: none;
+    display: block;
+    width: 100%;
+    transition: background 0.3s, color 0.3s;
+  }
+  button:hover {
+    background: #f39c12;
+    color: #121212;
+  }
+
+  /* Result bars */
+  .result-container {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+  }
+  .hero-result {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #2c2c2c;
+    border-radius: 10px;
+    padding: 15px 20px;
+    user-select: none;
+    gap: 15px;
+  }
+  .hero-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  .hero-info img {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+    border-radius: 50%;
+    border: 2px solid #f39c12;
+    box-shadow: 0 0 8px #f39c12;
+  }
+  .hero-name {
+    font-weight: 700;
+    font-size: 1.4rem;
+    color: #f39c12;
+    user-select: none;
+  }
+  .power-bar {
+    flex-grow: 1;
+    height: 25px;
+    background: #444;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: inset 0 0 7px rgba(0,0,0,0.8);
+    position: relative;
+  }
+  .power-fill {
+    height: 100%;
+    border-radius: 15px 0 0 15px;
+    transition: width 1s ease;
+    box-shadow: 0 0 10px #f39c12;
+    position: relative;
+    background: linear-gradient(90deg, #f39c12 0%, #f1c40f 70%);
+  }
+  .power-text {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-weight: 700;
+    color: #121212;
+    text-shadow: 1px 1px 2px #fff;
+    user-select: none;
+  }
+  .winner {
+    background: #27ae60;
+    color: #fff;
+    box-shadow: 0 0 15px #27ae60;
+  }
+  .loser {
+    opacity: 0.5;
+  }
+
+  /* Responsive */
+  @media (max-width: 500px) {
+    #app {
+      max-width: 100%;
+      padding: 20px;
+    }
+    .hero-name {
+      font-size: 1.2rem;
+    }
+    ul.hero-list li img {
+      width: 50px;
+      height: 50px;
+    }
+    .hero-info img {
+      width: 70px;
+      height: 70px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div id="app">
+  <!-- Dynamic content here -->
+</div>
+
+<script>
+  // Hero data with image URLs (using free images from Wikipedia or placeholders)
+  const marvelHeroes = [
+    { name: "Iron Man", power: 85, image: "https://www.shutterstock.com/image-vector/july-3-2023-vector-illustration-600nw-2326749515.jpg" },
+    { name: "Captain America", power: 75, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6ilRMU4QSOn-9YQ-F2YFMXlqjjgCqOt8v8w&s" },
+    { name: "Thor", power: 95, image: "https://weflatables.s3.amazonaws.com/wp-content/uploads/2023/06/12172541/44cm-Thor-Axe-Hammer-Thor-s-Hammer-Cosplay-1-1-Guns-Figure-Model-Kids-Gift-Movie.jpg" },
+    { name: "Hulk", power: 92, image: "https://images.seeklogo.com/logo-png/34/1/hulk-logo-png_seeklogo-344713.png" },
+    { name: "Black Widow", power: 65, image: "https://www.powercoin.it/17336-superlarge_default/black-widow-natasha-romanoff-marvel-1-oz-monnaie-argent-1-fiji-2020.jpg" },
+    { name: "Spider-Man", power: 78, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9GPuiFMNPEEA8U92prJdadDk8QIWvs4N9FQ&s" },
+    { name: "Doctor Strange", power: 88, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvdKiWF2bFDYNf59s3FxWsqcRjMnBT6TH7YXAZTqiqLb2D9U29C8x_W2siEC66tewqcsE&usqp=CAU" },
+  ];
+
+  const dcHeroes = [
+    { name: "Superman", power: 98, image: "https://cdn.shopify.com/s/files/1/1095/6418/files/Supreman-Black_red_fb588ce5-d3fb-4e37-af50-505e25dcc34d.jpg?v=1649940496" },
+    { name: "Batman", power: 75, image: "https://i.pinimg.com/736x/e3/a2/88/e3a2885d7017fe413d94228d7e12be58.jpg" },
+    { name: "Wonder Woman", power: 90, image: "https://image.spreadshirtmedia.net/image-server/v1/products/T1459A839PA4459PT28D16691230W10000H8715/views/1,width=800,height=800,appearanceId=839,backgroundColor=F2F2F2/dc-comics-wonder-woman-classic-logo-gold-sticker.jpg" },
+    { name: "The Flash", power: 85, image: "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/93807885-917f-46d0-afbb-93171f7f12e0/d8uy5gu-dee7b8f9-ff96-44fd-b2ea-85ce1a9cf993.png/v1/fill/w_894,h_894/the_flash_logo_by_tremretr_d8uy5gu-pre.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9OTAwIiwicGF0aCI6IlwvZlwvOTM4MDc4ODUtOTE3Zi00NmQwLWFmYmItOTMxNzFmN2YxMmUwXC9kOHV5NWd1LWRlZTdiOGY5LWZmOTYtNDRmZC1iMmVhLTg1Y2UxYTljZjk5My5wbmciLCJ3aWR0aCI6Ijw9OTAwIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmltYWdlLm9wZXJhdGlvbnMiXX0.E_qRDjuqtLEA5q6WJKzOlkEvMdiSgdhstIuAdaqTdDQ" },
+    { name: "Aquaman", power: 70, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFdzWowkhgfXfgpY2T7bTbCsb_sSxWG1zTOg&s" },
+    { name: "Green Lantern", power: 80, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsLJPRjX4SXv1o29yTh_lFwugT9w78lL8clQ&s" },
+    { name: "Cyborg", power: 65, image: "https://i.pinimg.com/736x/38/a3/95/38a395b5c75ed813ea9978bc769ca795.jpg" },
+  ];
+
+  const app = document.getElementById('app');
+
+  let selectedMarvelHero = null;
+  let selectedDCHero = null;
+
+  // Render Marvel hero list with images
+  function renderMarvelList() {
+    app.innerHTML = `
+      <h1>Choose Your Marvel Hero</h1>
+      <ul class="hero-list" aria-label="Marvel heroes list">
+        ${marvelHeroes.map(h => `
+          <li tabindex="0" role="button" aria-pressed="false">
+            <img src="${h.image}" alt="${h.name} image" />
+            ${h.name}
+          </li>
+        `).join('')}
+      </ul>
+    `;
+
+    const items = app.querySelectorAll('li');
+    items.forEach((li, i) => {
+      li.addEventListener('click', () => {
+        selectedMarvelHero = marvelHeroes[i];
+        renderDCList();
+      });
+      li.addEventListener('keydown', e => {
+        if(e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          selectedMarvelHero = marvelHeroes[i];
+          renderDCList();
+        }
+      });
+    });
+  }
+
+  // Render DC hero list with images
+  function renderDCList() {
+    app.innerHTML = `
+      <h1>Choose Your DC Hero</h1>
+      <ul class="hero-list" aria-label="DC heroes list">
+        ${dcHeroes.map(h => `
+          <li tabindex="0" role="button" aria-pressed="false">
+            <img src="${h.image}" alt="${h.name} image" />
+            ${h.name}
+          </li>
+        `).join('')}
+      </ul>
+      <button id="back-marvel">Back to Marvel selection</button>
+    `;
+
+    const items = app.querySelectorAll('li');
+    items.forEach((li, i) => {
+      li.addEventListener('click', () => {
+        selectedDCHero = dcHeroes[i];
+        renderResults();
+      });
+      li.addEventListener('keydown', e => {
+        if(e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          selectedDCHero = dcHeroes[i];
+          renderResults();
+        }
+      });
+    });
+
+    document.getElementById('back-marvel').addEventListener('click', () => {
+      selectedMarvelHero = null;
+      renderMarvelList();
+    });
+  }
+
+  // Render results with hero images
+  function renderResults() {
+    if (!selectedMarvelHero || !selectedDCHero) {
+      renderMarvelList();
+      return;
+    }
+
+    let winner, loser;
+    if(selectedMarvelHero.power > selectedDCHero.power) {
+      winner = { ...selectedMarvelHero, side: 'Marvel' };
+      loser = { ...selectedDCHero, side: 'DC' };
+    } else if(selectedMarvelHero.power < selectedDCHero.power) {
+      winner = { ...selectedDCHero, side: 'DC' };
+      loser = { ...selectedMarvelHero, side: 'Marvel' };
+    } else {
+      winner = loser = null;
+    }
+
+    app.innerHTML = `
+      <h1>Power Duel Results</h1>
+      <div class="result-container" role="region" aria-live="polite" aria-label="Power comparison results">
+        <div class="hero-result ${winner && winner.name === selectedMarvelHero.name ? 'winner' : (loser && loser.name === selectedMarvelHero.name ? 'loser' : '')}">
+          <div class="hero-info">
+            <img src="${selectedMarvelHero.image}" alt="${selectedMarvelHero.name} image" />
+            <div class="hero-name">Marvel: ${selectedMarvelHero.name}</div>
+          </div>
+          <div class="power-bar" aria-label="Marvel hero power bar">
+            <div class="power-fill" style="width: ${selectedMarvelHero.power}%" aria-valuenow="${selectedMarvelHero.power}" aria-valuemin="0" aria-valuemax="100" role="progressbar">
+              <span class="power-text">${selectedMarvelHero.power}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-result ${winner && winner.name === selectedDCHero.name ? 'winner' : (loser && loser.name === selectedDCHero.name ? 'loser' : '')}">
+          <div class="hero-info">
+            <img src="${selectedDCHero.image}" alt="${selectedDCHero.name} image" />
+            <div class="hero-name">DC: ${selectedDCHero.name}</div>
+          </div>
+          <div class="power-bar" aria-label="DC hero power bar">
+            <div class="power-fill" style="width: ${selectedDCHero.power}%" aria-valuenow="${selectedDCHero.power}" aria-valuemin="0" aria-valuemax="100" role="progressbar">
+              <span class="power-text">${selectedDCHero.power}</span>
+            </div>
+          </div>
+        </div>
+
+        ${winner === null ? `<p style="text-align:center; font-weight:700; margin-top:20px; color:#f39c12;">It's a TIE! Both are equally powerful!</p>` : `
+          <p style="text-align:center; font-weight:700; margin-top:20px; color:#27ae60;">
+            Winner: ${winner.side} - ${winner.name} 💥🔥
+          </p>
+        `}
+      </div>
+      <button id="back-dc">Choose different DC hero</button>
+      <button id="restart" style="margin-top:10px;">Restart Duel</button>
+    `;
+
+    document.getElementById('back-dc').addEventListener('click', () => {
+      selectedDCHero = null;
+      renderDCList();
+    });
+    document.getElementById('restart').addEventListener('click', () => {
+      selectedMarvelHero = null;
+      selectedDCHero = null;
+      renderMarvelList();
+    });
+  }
+
+  // Kickoff
+  renderMarvelList();
+</script>
+
+</body>
+</html>
